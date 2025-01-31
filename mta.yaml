@@ -1,0 +1,93 @@
+_schema-version: "3.2"
+ID: app_listarHes
+version: 0.0.1
+modules:
+- name: app_listarHes-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: app_listarHes-destination-service
+    parameters:
+      content-target: true
+  - name: app_listarHes_html_repo_host
+    parameters:
+      service-key:
+        name: app_listarHes_html_repo_host-key
+  - name: uaa_app_listarHes
+    parameters:
+      service-key:
+        name: uaa_app_listarHes-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: app_hes_app_listarHes_html_repo_host
+          ServiceInstanceName: app_listarHes-html5-app-host-service
+          ServiceKeyName: app_listarHes_html_repo_host-key
+          sap.cloud.service: app.hes
+        - Authentication: OAuth2UserTokenExchange
+          Name: app_hes_uaa_app_listarHes
+          ServiceInstanceName: app_listarHes-xsuaa-service
+          ServiceKeyName: uaa_app_listarHes-key
+          sap.cloud.service: app.hes
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: app_listarHes-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: app_listarHes_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - apphesapplistarhes.zip
+      name: apphesapplistarhes
+      target-path: resources/
+- name: apphesapplistarhes
+  type: html5
+  path: applistarhes
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: app_listarHes-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: app_listarHes-destination-service
+    service-plan: lite
+- name: app_listarHes_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: app_listarHes-html5-app-host-service
+    service-plan: app-host
+- name: uaa_app_listarHes
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: app_listarHes-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true

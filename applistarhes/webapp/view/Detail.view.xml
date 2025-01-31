@@ -1,0 +1,92 @@
+<mvc:View controllerName="app.hes.applistarhes.controller.Detail"
+xmlns:mvc="sap.ui.core.mvc"
+xmlns="sap.m"
+xmlns:l="sap.ui.layout.form"
+displayBlock="true">
+ <App id="app2">
+     <Page title="{viewModel>/SelectedHES/Serviceentrysheet} Detalle del HES">
+        <content>
+          <l:SimpleForm editable="false" layout="ResponsiveGridLayout">
+          	
+		           
+    <Label text="Número de HES" />
+    <Text text="{viewModel>/SelectedHES/Serviceentrysheet}" />
+
+    <Label text="Número de Pedido" />
+    <Text text="{viewModel>/SelectedHES/PurchaseOrder}" />
+
+    <Label text="Estado" />
+    <Text text="{viewModel>/SelectedHES/Status}" />
+
+    <Label text="Fecha de Referencia de Precio" />
+    <Text text="{viewModel>/SelectedHES/ReferencePrice}" />
+
+    <Label text="Centro de Coste" />
+    <Text text="{viewModel>/SelectedHES/CostCenter}" />
+
+    <Label text="Número Externo" />
+    <Text text="{viewModel>/SelectedHES/ExternalNumber}" />
+
+    <Label text="Lugar del Servicio" />
+    <Text text="{viewModel>/SelectedHES/ServiceLocation}" />
+	
+
+
+</l:SimpleForm>
+    <!-- Encabezado para los Servicios -->
+    	<Title level="H3" text="Servicios" >
+					
+		</Title>
+   
+   
+    <VBox>
+        <Table items="{viewModel>/SelectedHES/Services}">
+            <columns>
+                <Column>
+                    <Text text="N° Servicio" />
+                </Column>
+                <Column>
+                    <Text text="Texto Breve" />
+                </Column>
+                <Column>
+                    <Text text="Cantidad" />
+                </Column>
+                <Column>
+                    <Text text="Unidad" />
+                </Column>
+                <Column>
+                    <Text text="Precio Bruto" />
+                </Column>
+                <Column>
+                    <Text text="Moneda" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem>
+                    <cells>
+                        <Text text="{viewModel>ServiceNumber}" />
+                        <Text text="{viewModel>ShortText}" />
+                        <Text text="{viewModel>Quantity}" />
+                        <Text text="{viewModel>Unit}" />
+                        <Text text="{viewModel>GrossPrice}" />
+                        <Text text="{viewModel>Currency}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </VBox>
+
+
+        </content>
+        <footer>
+        <Bar>
+                <contentRight>
+                    <Button text="Aprobar" type="Accept" press="onApproveHES"/>
+                    <Button text="Rechazar" type="Reject" press="onRejectHES"/>
+                    <Button text="Volver" press="_navigateBack"/>
+                </contentRight>
+          </Bar>
+        </footer>
+    </Page>
+      </App>
+</mvc:View>

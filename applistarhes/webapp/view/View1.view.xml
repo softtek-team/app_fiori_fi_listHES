@@ -1,0 +1,80 @@
+<mvc:View controllerName="app.hes.applistarhes.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:filterbar="sap.ui.comp.filterbar">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <filterbar:FilterBar id="filterBar" liveMode="true" search="onFilterSearch">
+                <filterbar:filterGroupItems>
+                    <filterbar:FilterGroupItem groupName="Group1" name="Serviceentrysheet" label="HES Number">
+                        <filterbar:control>
+                            <Input id="filterServiceentrysheet" value="{filters>/Serviceentrysheet}" />
+                        </filterbar:control>
+                    </filterbar:FilterGroupItem>
+                    <filterbar:FilterGroupItem groupName="Group1" name="PurchaseOrder" label="Purchase Order">
+                        <filterbar:control>
+                            <Input id="filterPurchaseOrder" value="{filters>/PurchaseOrder}" />
+                        </filterbar:control>
+                    </filterbar:FilterGroupItem>
+                    <filterbar:FilterGroupItem groupName="Group1" name="Status" label="Status">
+                        <filterbar:control>
+                            <Select id="filterStatus" selectedKey="{filters>/Status}">
+                                <items>
+                                    <core:Item key="" text="All" />
+                                    <core:Item key="Open" text="Open" />
+                                    <core:Item key="Approved" text="Approved" />
+                                    <core:Item key="Rejected" text="Rejected" />
+                                </items>
+                            </Select>
+                        </filterbar:control>
+                    </filterbar:FilterGroupItem>
+                    <filterbar:FilterGroupItem groupName="Group1" name="ExternalNumber" label="External Number">
+                        <filterbar:control>
+                            <Input id="filterExternalNumber" value="{filters>/ExternalNumber}" />
+                        </filterbar:control>
+                    </filterbar:FilterGroupItem>
+                </filterbar:filterGroupItems>
+            </filterbar:FilterBar>
+
+            <Table id="idHesTable" items="{path: '/ServiceEntrySheetSet'}">
+                <columns>
+                    <Column>
+                        <Text text="HES Number" />
+                    </Column>
+                    <Column>
+                        <Text text="Purchase Order" />
+                    </Column>
+                    <Column>
+                        <Text text="Status" />
+                    </Column>
+                    <Column>
+                        <Text text="Reference Price Date" />
+                    </Column>
+                    <Column>
+                        <Text text="Cost Center" />
+                    </Column>
+                    <Column>
+                        <Text text="Numero de seguimiento" />
+                    </Column>
+                    <Column>
+                        <Text text="N° Necesidad" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press="onNavigateToDetail">
+                        <cells>
+                            <Text text="{Serviceentrysheet}" />
+                            <Text text="{PurchaseOrder}" />
+                            <Text text="{Status}" />
+                            <Text text="{ReferencePrice}" />
+                            <Text text="{CostCenter}" />
+                            <Text text="{ExternalNumber}" />
+                            <Text text="{ServiceLocation}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

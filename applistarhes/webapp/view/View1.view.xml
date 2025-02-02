@@ -37,44 +37,45 @@
                 </filterbar:filterGroupItems>
             </filterbar:FilterBar>
 
-            <Table id="idHesTable" items="{path: '/ServiceEntrySheetSet'}">
-                <columns>
-                    <Column>
-                        <Text text="HES Number" />
-                    </Column>
-                    <Column>
-                        <Text text="Purchase Order" />
-                    </Column>
-                    <Column>
-                        <Text text="Status" />
-                    </Column>
-                    <Column>
-                        <Text text="Reference Price Date" />
-                    </Column>
-                    <Column>
-                        <Text text="Cost Center" />
-                    </Column>
-                    <Column>
-                        <Text text="Numero de seguimiento" />
-                    </Column>
-                    <Column>
-                        <Text text="N° Necesidad" />
-                    </Column>
-                </columns>
-                <items>
-                    <ColumnListItem type="Navigation" press="onNavigateToDetail">
-                        <cells>
-                            <Text text="{Serviceentrysheet}" />
-                            <Text text="{PurchaseOrder}" />
-                            <Text text="{Status}" />
-                            <Text text="{ReferencePrice}" />
-                            <Text text="{CostCenter}" />
-                            <Text text="{ExternalNumber}" />
-                            <Text text="{ServiceLocation}" />
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
+          <Table id="idHesTable" items="{viewModel>/HESDocuments}">
+    <columns>
+        <Column>
+            <Text text="HES Number" />
+        </Column>
+        <Column>
+            <Text text="Purchase Order" />
+        </Column>
+        <Column>
+            <Text text="Status" />
+        </Column>
+        <Column>
+            <Text text="Reference Price Date" />
+        </Column>
+        <Column>
+            <Text text="Cost Center" />
+        </Column>
+        <Column>
+            <Text text="Numero de seguimiento" />
+        </Column>
+        <Column>
+            <Text text="N° Necesidad" />
+        </Column>
+    </columns>
+    <items>
+        <ColumnListItem type="Navigation" press="onNavigateToDetail">
+            <cells>
+                <Text text="{viewModel>Serviceentrysheet}" />
+                <Text text="{viewModel>PurchaseOrder}" />
+                <Text text="{viewModel>Status}" />
+                <Text text="{viewModel>ReferencePrice}" />
+                <Text text="{viewModel>CostCenter}" />
+                <Text text="{viewModel>ExternalNumber}" />
+                <Text text="{viewModel>ServiceLocation}" />
+            </cells>
+        </ColumnListItem>
+    </items>
+</Table>
+
         </content>
     </Page>
 </mvc:View>

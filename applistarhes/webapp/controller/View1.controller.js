@@ -4,14 +4,20 @@ sap.ui.define([
     "sap/m/MessageToast",
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], function (Controller, UIComponent, MessageToast, JSONModel, Filter, FilterOperator) {
+    "sap/ui/model/FilterOperator",
+    "sap/ui/core/BusyIndicator"
+], function (Controller, UIComponent, MessageToast, JSONModel, Filter, FilterOperator, BusyIndicator) {
     "use strict";
 
     return Controller.extend("app.hes.applistarhes.controller.View1", {
         onInit: function () {
-            // Obtener el modelo OData declarado en el manifest.json
-            const oModel = this.getView().getModel();
+            this.getOwnerComponent().getModel().attachMetadataLoaded(null, function() {
+                console.log("Modelo OData cargado correctamente.");
+            }, this);
+        
+            // Intentar forzar la carga del modelo en la vista
+            const oModel = this.getOwnerComponent().getModel();
+            this.getView().setModel(oModel);
             
             // Crear un modelo JSON para los filtros
             const oFilterModel = new JSONModel({
@@ -22,26 +28,81 @@ sap.ui.define([
             });
             this.getView().setModel(oFilterModel, "filters");
 
+            // **Crear el modelo JSON para almacenar los datos de HES**
+            const oViewModel = new JSONModel({
+                HESDocuments: [] // Se inicializa vacío
+            });
+            this.getView().setModel(oViewModel, "viewModel");
+            sap.ui.getCore().setModel(oModel, "viewModel");
+
             // Cargar los datos iniciales
             this._loadHESDocuments();
         },
 
+        // _loadHESDocuments: function () {
+        //     const oTable = this.byId("idHesTable");
+        //     const oBinding = oTable.getBinding("items");
+
+        //     if (oBinding) {
+        //         oBinding.refresh();
+        //     }
+        // },
+      
+        
         _loadHESDocuments: function () {
-            const oTable = this.byId("idHesTable");
-            const oBinding = oTable.getBinding("items");
-
-            if (oBinding) {
-                oBinding.refresh();
+            const oModel = this.getView().getModel();
+            const oViewModel = this.getView().getModel("viewModel");
+        
+            if (!oModel) {
+                console.error("El modelo OData no está disponible.");
+                return;
             }
-        },
+        
+            // Mostrar BusyIndicator
+            BusyIndicator.show(0);
 
-        onNavigateToDetail: function (oEvent) {
-            const oRouter = UIComponent.getRouterFor(this);
-            const sServiceentrysheet = oEvent.getSource().getBindingContext().getProperty("Serviceentrysheet");
+        
+            //const sFilter = "Creationdatetime ge datetime'2025-01-30T00:00:00'";
+            const today = new Date().toISOString().split("T")[0] + "T00:00:00";
+            const sFilter = `Creationdatetime ge datetime'${today}'`;
+            const sExpand = "navHesToHesItems";
+        
+            oModel.read("/ServiceEntrySheetSet", {
+                urlParameters: {
+                    "$filter": sFilter,
+                    "$expand": sExpand
+                },
+                success: function (oData) {
+                    console.log("Datos obtenidos correctamente:", oData);
+                    
+                    // Guardar los datos en el modelo de vista
+                    oViewModel.setProperty("/HESDocuments", oData.results);
 
-            oRouter.navTo("Detail", {
-                Serviceentrysheet: sServiceentrysheet
+                    // Ocultar BusyIndicator
+                    BusyIndicator.hide();
+                },
+                error: function (oError) {
+                    console.error("Error al obtener los datos:", oError);
+
+                    // Ocultar BusyIndicator en caso de error
+                    BusyIndicator.hide();
+                }
             });
+        }
+        ,
+        onNavigateToDetail: function (oEvent) {
+            // const oRouter = UIComponent.getRouterFor(this);
+            // const sServiceentrysheet = oEvent.getSource().getBindingContext().getProperty("Serviceentrysheet");
+             // Obtener el router
+             const oRouter = UIComponent.getRouterFor(this);
+
+             // Obtener el número HES desde la fila seleccionada
+             const sServiceentrysheet = oEvent.getSource().getBindingContext("viewModel").getProperty("Serviceentrysheet");
+ 
+             oRouter.navTo("Detail", {
+                 Serviceentrysheet: sServiceentrysheet
+             });
+          
         },
 
         onFilterSearch: function (oEvent) {

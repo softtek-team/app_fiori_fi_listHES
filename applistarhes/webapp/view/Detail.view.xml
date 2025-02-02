@@ -4,16 +4,16 @@ xmlns="sap.m"
 xmlns:l="sap.ui.layout.form"
 displayBlock="true">
  <App id="app2">
-     <Page title="{viewModel>/SelectedHES/Serviceentrysheet} Detalle del HES">
+     <Page title="{oViewModel2>/SelectedHES/Serviceentrysheet} Detalle del HES">
         <content>
           <l:SimpleForm editable="false" layout="ResponsiveGridLayout">
           	
 		           
     <Label text="Número de HES" />
-    <Text text="{viewModel>/SelectedHES/Serviceentrysheet}" />
+    <Text text="{oViewModel2>/SelectedHES/Serviceentrysheet}" />
 
     <Label text="Número de Pedido" />
-    <Text text="{viewModel>/SelectedHES/PurchaseOrder}" />
+    <Text text="{oViewModel2>/SelectedHES/PurchaseOrder}" />
 
     <Label text="Estado" />
     <Text text="{viewModel>/SelectedHES/Status}" />
@@ -22,7 +22,7 @@ displayBlock="true">
     <Text text="{viewModel>/SelectedHES/ReferencePrice}" />
 
     <Label text="Centro de Coste" />
-    <Text text="{viewModel>/SelectedHES/CostCenter}" />
+    <Text text="{viewModel>/SelectedHES/SupplierName}" />
 
     <Label text="Número Externo" />
     <Text text="{viewModel>/SelectedHES/ExternalNumber}" />

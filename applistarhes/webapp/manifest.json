@@ -80,7 +80,9 @@
       "": {
         "dataSource": "mainService",
         "preload": true,
-        "settings": {}
+        "settings": {
+        
+        }
       }
     },
     "resources": {

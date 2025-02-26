@@ -5,72 +5,156 @@
     xmlns:filterbar="sap.ui.comp.filterbar">
     <Page id="page" title="{i18n>title}">
         <content>
-            <filterbar:FilterBar id="filterBar" liveMode="true" search="onFilterSearch">
-                <filterbar:filterGroupItems>
-                    <filterbar:FilterGroupItem groupName="Group1" name="Serviceentrysheet" label="HES Number">
-                        <filterbar:control>
-                            <Input id="filterServiceentrysheet" value="{filters>/Serviceentrysheet}" />
-                        </filterbar:control>
-                    </filterbar:FilterGroupItem>
-                    <filterbar:FilterGroupItem groupName="Group1" name="PurchaseOrder" label="Purchase Order">
-                        <filterbar:control>
-                            <Input id="filterPurchaseOrder" value="{filters>/PurchaseOrder}" />
-                        </filterbar:control>
-                    </filterbar:FilterGroupItem>
-                    <filterbar:FilterGroupItem groupName="Group1" name="Status" label="Status">
-                        <filterbar:control>
-                            <Select id="filterStatus" selectedKey="{filters>/Status}">
-                                <items>
-                                    <core:Item key="" text="All" />
-                                    <core:Item key="Open" text="Open" />
-                                    <core:Item key="Approved" text="Approved" />
-                                    <core:Item key="Rejected" text="Rejected" />
-                                </items>
-                            </Select>
-                        </filterbar:control>
-                    </filterbar:FilterGroupItem>
-                    <filterbar:FilterGroupItem groupName="Group1" name="ExternalNumber" label="External Number">
-                        <filterbar:control>
-                            <Input id="filterExternalNumber" value="{filters>/ExternalNumber}" />
-                        </filterbar:control>
-                    </filterbar:FilterGroupItem>
-                </filterbar:filterGroupItems>
-            </filterbar:FilterBar>
+<filterbar:FilterBar id="filterBar" search="onFilterSearch">
+    <filterbar:filterGroupItems>
+        <filterbar:FilterGroupItem groupName="Group1" name="Serviceentrysheet" label="N° HES">
+            <filterbar:control>
+                <Input id="filterServiceentrysheet" value="{filters>/Serviceentrysheet}" />
+            </filterbar:control>
+        </filterbar:FilterGroupItem>
+
+        <filterbar:FilterGroupItem groupName="Group1" name="PurchaseOrder" label="Orden de Compra">
+            <filterbar:control>
+                <Input id="filterPurchaseOrder" value="{filters>/Purchaseorder}" />
+            </filterbar:control>
+        </filterbar:FilterGroupItem>
+
+      <!--  <filterbar:FilterGroupItem groupName="Group1" name="ApprovalStatus" label="Estado Aprobación">
+            <filterbar:control>
+                <Select id="filterApprovalStatus" selectedKey="{filters>/Approvalstatus}">
+                    <items>
+                        <core:Item key="" text="All" />
+                        <core:Item key="Open" text="Open" />
+                        <core:Item key="Approved" text="Approved" />
+                        <core:Item key="Rejected" text="Rejected" />
+                    </items>
+                </Select>
+            </filterbar:control>
+        </filterbar:FilterGroupItem>
+-->
+<filterbar:FilterGroupItem groupName="Group1" name="ApprovalStatus" label="Estado Aprobación">
+    <filterbar:control>
+        <Select id="filterApprovalStatus" selectedKey="{filters>/Approvalstatus}">
+            <items>
+                <core:Item key="" text="Todos" />
+               
+                <core:Item key="Approved" text="Aprobado" />
+                <core:Item key="Rejected" text="Rechazado" />
+            </items>
+        </Select>
+    </filterbar:control>
+</filterbar:FilterGroupItem>
+
+
+
+        <filterbar:FilterGroupItem groupName="Group1" name="CreationDate" label="Fecha de Creación">
+            <filterbar:control>
+                <VBox>
+                    <DatePicker 
+                        id="filterCreationDate" 
+                        value="{
+                                'path':'filters>/Creationdatetime',
+                                'type':'sap.ui.model.type.Date',
+                                'formatOptions': {
+                                    'pattern': 'yyyy-MM-dd'
+                                }
+                            }" 
+                        displayFormat="yyyy-MM-dd"
+                        placeholder="30 días previos desde"
+                    />
+                </VBox>
+            </filterbar:control>
+        </filterbar:FilterGroupItem>
+ <!-- 
+        <filterbar:FilterGroupItem groupName="Group1" name="Serviceentrysheetname" label="Tracking Number">
+            <filterbar:control>
+                <Input id="filterServiceentrysheetname" value="{filters>/Serviceentrysheetname}" />
+            </filterbar:control>
+        </filterbar:FilterGroupItem>
+
+        <filterbar:FilterGroupItem groupName="Group1" name="SupplierName" label="Nombre del proveedor">
+            <filterbar:control>
+                <Input id="filterSupplierName" value="{filters>/SupplierName}" />
+            </filterbar:control>
+        </filterbar:FilterGroupItem>
+
+        <filterbar:FilterGroupItem groupName="Group1" name="Location" label="N° Necesidad">
+            <filterbar:control>
+                <Input id="filterLocation" value="{filters>/Location}" />
+            </filterbar:control>
+        </filterbar:FilterGroupItem>
+        
+        -->
+
+
+
+
+<!-- <filterbar:FilterGroupItem groupName="Group1" name="ExtNumber" label="N° Seguimiento">
+            <filterbar:control>
+                <Input id="filterExtNumber" value="{filters>/ExtNumber}" />
+            </filterbar:control>
+        </filterbar:FilterGroupItem> 
+
+
+          <filterbar:FilterGroupItem groupName="Group1" name="Serviceentrysheetname" label="N° Seguimiento">
+            <filterbar:control>
+                <Input id="filterExtNumber" value="{filters>/Serviceentrysheetname}" />
+            </filterbar:control>
+        </filterbar:FilterGroupItem>
+ -->
+    </filterbar:filterGroupItems>
+</filterbar:FilterBar>
+
 
           <Table id="idHesTable" items="{viewModel>/HESDocuments}">
     <columns>
         <Column>
-            <Text text="HES Number" />
+            <Text text="N° HES" />
         </Column>
         <Column>
-            <Text text="Purchase Order" />
+            <Text text="Orden de Compra" />
         </Column>
         <Column>
-            <Text text="Status" />
+            <Text text="Estado Aprobación" />
         </Column>
         <Column>
-            <Text text="Reference Price Date" />
+            <Text text="Fecha de Creación" />
         </Column>
         <Column>
-            <Text text="Cost Center" />
+            <Text text="N° de Seguimiento" />
         </Column>
-        <Column>
-            <Text text="Numero de seguimiento" />
+      <Column>
+            <Text text="Nombre del Proveedor" />
         </Column>
         <Column>
             <Text text="N° Necesidad" />
         </Column>
+       
     </columns>
     <items>
         <ColumnListItem type="Navigation" press="onNavigateToDetail">
             <cells>
-                <Text text="{viewModel>Serviceentrysheet}" />
-                <Text text="{viewModel>PurchaseOrder}" />
-                <Text text="{viewModel>Status}" />
-                <Text text="{viewModel>ReferencePrice}" />
-                <Text text="{viewModel>CostCenter}" />
-                <Text text="{viewModel>ExternalNumber}" />
-                <Text text="{viewModel>ServiceLocation}" />
+                <Text text="{viewModel>Serviceentrysheet}" /> <!-- HES Numero -->
+                <Text text="{viewModel>Purchaseorder}" /> <!-- Orden de compra -->
+                <!--  Estado aprobación -->
+                <!--  <Text text="{path: 'viewModel>Approvalstatus}', formatter: '.formatter.formatStatusText'}"/>Estado aprobación -->
+                   <Text  text="{
+                                parts: [
+                                    { path: 'viewModel>Approvalstatus' },
+                                    { path: 'viewModel>Isdeleted' }
+                                ],
+                                formatter: '.formatter.getStatusText'
+                            }" />
+                
+    
+                             <!-- Estado aprobación false Rechazado   si es true comparar ApprovalStatus 'X' con Isdeleted true == Aprobado con colores-->
+                <Text text="{path: 'viewModel>Creationdatetime', formatter: '.formatter.formatDate'}"/> <!-- Fecha de creación -->
+                <!-- <Text text="{viewModel>ExtNumber}" />  HES Name ahora Numero de seguimiento -->
+                <Text text="{viewModel>Serviceentrysheetname}" /> <!-- HES Name ahora Numero de seguimiento -->
+                 <!-- <Text text="{viewModel>Releasecode}" /> Cod liberación -->
+                <Text text="{viewModel>SupplierName}" /> <!-- Nombre del proveedor -->
+                <Text text="{viewModel>Location}" /> <!-- N° Necesidad -->
+               
             </cells>
         </ColumnListItem>
     </items>

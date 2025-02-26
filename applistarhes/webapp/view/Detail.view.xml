@@ -4,85 +4,180 @@ xmlns="sap.m"
 xmlns:l="sap.ui.layout.form"
 displayBlock="true">
  <App id="app2">
-     <Page title="{oViewModel2>/SelectedHES/Serviceentrysheet} Detalle del HES">
+     <Page title="   {viewModel>/SelectedHES/Serviceentrysheet} Detalle del HES">
         <content>
+
+        
           <l:SimpleForm editable="false" layout="ResponsiveGridLayout">
           	
-		           
-    <Label text="Número de HES" />
-    <Text text="{oViewModel2>/SelectedHES/Serviceentrysheet}" />
+                            
+                <Label text="N° HES" />
+                <Text text="{viewModel>/SelectedHES/Serviceentrysheet}" />
 
-    <Label text="Número de Pedido" />
-    <Text text="{oViewModel2>/SelectedHES/PurchaseOrder}" />
+                <Label text="Número de Pedido" />
+                <Text text="{viewModel>/SelectedHES/Purchaseorder}" />
 
-    <Label text="Estado" />
-    <Text text="{viewModel>/SelectedHES/Status}" />
+                <Label text="Codigo liberación" />
+                <Text text="{viewModel>/SelectedHES/Releasecode}" />
 
-    <Label text="Fecha de Referencia de Precio" />
-    <Text text="{viewModel>/SelectedHES/ReferencePrice}" />
+                <Label text="Estado de Workflow" />
+                <Text text="{viewModel>/SelectedHES/Sesworkflowstatus}" />
+                
 
-    <Label text="Centro de Coste" />
-    <Text text="{viewModel>/SelectedHES/SupplierName}" />
+                <Label text="Fecha de creación" />
+                <Text text="{path: 'viewModel>/SelectedHES/Creationdatetime', formatter: '.formatter.formatDate'}"/>
 
-    <Label text="Número Externo" />
-    <Text text="{viewModel>/SelectedHES/ExternalNumber}" />
+                <Label text="Nombre del Proveedor" />
+                <Text text="{viewModel>/SelectedHES/Supplier} - {viewModel>/SelectedHES/SupplierName}" />
 
-    <Label text="Lugar del Servicio" />
-    <Text text="{viewModel>/SelectedHES/ServiceLocation}" />
-	
+                <Label text="Descripcion servicio" />
+                <Text text="{viewModel>/SelectedHES/Descripcionservicio}" />
+
+                <Label text="Numero de seguimiento" />
+                <Text text="{viewModel>/SelectedHES/ExtNumber}" />
+                
+                <!--  Rechazado true comparar aproval '' -->
+                  <Label text="Estado" />
+                	<MessageStrip  text="{
+                                parts: [
+                                    { path: 'viewModel>/SelectedHES/Approvalstatus' },
+                                    { path: 'viewModel>/SelectedHES/Isdeleted' }
+                                ],
+                                formatter: '.formatter.getStatusText'
+                            }"
+                                type="{
+                                parts: [
+                                    { path: 'viewModel>/SelectedHES/Approvalstatus' },
+                                    { path: 'viewModel>/SelectedHES/Isdeleted' }
+                                ],
+                                formatter: '.formatter.getStatusColor'
+                            }"	class="sapUiMediumMarginBottom">
+			</MessageStrip>
 
 
-</l:SimpleForm>
+            </l:SimpleForm>
+    <Panel
+		id="containerLayout3"
+		headerText="  Textos Breves"
+		width="100%">
+		
+	</Panel>
+  <TextArea id="hesTextArea"
+    value="{path: 'viewModel>/SelectedHES/Texts', formatter: '.formatter.formatTextLines'}"
+    rows="5"
+    width="100%"
+    editable="false"/>
+
+
     <!-- Encabezado para los Servicios -->
-    	<Title level="H3" text="Servicios" >
+    	<Title level="H3" text="" >
 					
 		</Title>
    
+   	<Panel
+		id="containerLayout2"
+		headerText="  Servicios"
+		width="100%">
+		
+	</Panel>
    
     <VBox>
-        <Table items="{viewModel>/SelectedHES/Services}">
-            <columns>
-                <Column>
-                    <Text text="N° Servicio" />
-                </Column>
-                <Column>
-                    <Text text="Texto Breve" />
-                </Column>
-                <Column>
-                    <Text text="Cantidad" />
-                </Column>
-                <Column>
-                    <Text text="Unidad" />
-                </Column>
-                <Column>
-                    <Text text="Precio Bruto" />
-                </Column>
-                <Column>
-                    <Text text="Moneda" />
-                </Column>
-            </columns>
-            <items>
-                <ColumnListItem>
-                    <cells>
-                        <Text text="{viewModel>ServiceNumber}" />
-                        <Text text="{viewModel>ShortText}" />
-                        <Text text="{viewModel>Quantity}" />
-                        <Text text="{viewModel>Unit}" />
-                        <Text text="{viewModel>GrossPrice}" />
-                        <Text text="{viewModel>Currency}" />
-                    </cells>
-                </ColumnListItem>
-            </items>
-        </Table>
-    </VBox>
+       <Table items="{viewModel>/SelectedHES/Services}">
+    <columns>
+        <Column>
+            <Text text="Pedido" />
+        </Column>
+        <Column>
+            <Text text="N° Servicio" />
+        </Column>
+        <Column>
+            <Text text="Descripción" />
+        </Column>
+        <Column>
+            <Text text="Cantidad" />
+        </Column>
+        <Column>
+            <Text text="Unidad" />
+        </Column>
+        <Column>
+            <Text text="Valor Neto" />
+        </Column>
+        <Column>
+            <Text text="Valor IVA" />
+        </Column>
+        <Column>
+            <Text text="Valor Bruto" />
+        </Column>
+    </columns>
+    <items>
+        <ColumnListItem>
+            <cells>
+                <Text text="{viewModel>Purchaseorderitem}" /> <!-- Pedido -->
+                <Text text="{viewModel>Service}" /> <!-- N° Servicio -->
+                <Text text="{viewModel>Serviceentrysheetitemdesc}" /> <!-- Descripción -->
+                <Text text="{viewModel>Quantity}" /> <!-- Cantidad -->
+                <Text text="{path: 'viewModel>Quantityunit', formatter: '.formatter.formatEmptyToUN'}"/> <!-- Unidad -->
+                <Text text="{path: 'viewModel>Netpriceamount', formatter: '.formatter.formatNumber'}"/> <!-- Valor Neto -->
+                <Text text="0" /> <!-- Valor IVA -->
+                <Text text="{path: 'viewModel>GrPrice', formatter: '.formatter.formatNumber'}"/> <!-- Valor Bruto -->
+            </cells>
+        </ColumnListItem>
+    </items>
+</Table>
 
+    </VBox>
+<!-- Sección de Archivos Adjuntos -->
+             <Title level="H3" text="" />
+	<Panel
+		id="containerLayout"
+		headerText="Archivos Adjuntos del HES"
+		width="100%">
+		
+	</Panel>
+
+                <UploadCollection id="uploadCollection"
+                    items="{viewModel>/SelectedHES/Files}"
+                    showUploadButton="false"
+                    instantUpload="false" 
+                    uploadEnabled="false"
+                    uploadButtonInvisible="true"
+                    >
+                    <items>
+                        <UploadCollectionItem fileName="{viewModel>Filename}" mimeType="{viewModel>Mimetype}" enableDelete="false" enableEdit="false" press=".onDownloadFile" >
+                            <attributes>
+                                <ObjectAttribute title="ID Archivo" text="{viewModel>Idfile}" />
+                            </attributes>
+                          <!--   <items>
+                                <Button text="Descargar"
+                                    type="Transparent"
+                                    press=".onDownloadFile"
+                                    customData="{viewModel>Idfile}"/> 
+                            </items>-->
+                        </UploadCollectionItem>
+                    </items>
+                </UploadCollection>
 
         </content>
         <footer>
         <Bar>
                 <contentRight>
-                    <Button text="Aprobar" type="Accept" press="onApproveHES"/>
-                    <Button text="Rechazar" type="Reject" press="onRejectHES"/>
+            <!--Approvalstatus--> 
+                    <Button text="Aprobar" type="Accept" press="onApproveHES" enabled="{
+                                parts: [
+                                    { path: 'viewModel>/SelectedHES/Approvalstatus' },
+                                    { path: 'viewModel>/SelectedHES/Isdeleted' }
+                                ],
+                                formatter: '.formatter.getStatus'
+                            }"/>
+
+                    <Button text="Rechazar" type="Reject" press="onRejectHES" enabled="{
+                                parts: [
+                                    { path: 'viewModel>/SelectedHES/Approvalstatus' },
+                                    { path: 'viewModel>/SelectedHES/Isdeleted' }
+                                ],
+                                formatter: '.formatter.getStatus'
+                            }"/>
+
                     <Button text="Volver" press="_navigateBack"/>
                 </contentRight>
           </Bar>
